@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2>Editar Perfil</h2>
+            <hr>
+
+            {# Mostramos la foto actual si existe #}
+            {# --- CAMBIO AQUÍ --- #}
+            {% if user.foto %}
+                <img src="{{ user.foto.url }}" alt="Foto de {{ user.username }}" class="img-thumbnail rounded-circle mb-3" width="150">
+            {% else %}
+                 <img src="{% static 'imagenes/default-user.png' %}" alt="Foto por defecto" class="img-thumbnail rounded-circle mb-3" width="150">
+            {% endif %}
+
+            {# Es crucial añadir 'enctype' para la subida de archivos #}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">Nombre de Usuario:</label>
+                    {{ user_form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                    {{ user_form.email }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ foto_form.foto.id_for_label }}">Cambiar Foto de Perfil:</label>
+                    {{ foto_form.foto }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{% url 'usuarios:perfil' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{# usuarios/templates/usuarios/perfil.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Perfil de {{ user.username }}</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    
+                    {# Muestra el nombre legible del rol (ej. "Administrador") #}
+                    <p><strong>Rol:</strong> {{ user.get_rol_display|capfirst }}</p>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{% url 'usuarios:editar_perfil' %}" class="btn btn-primary">Editar Perfil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
