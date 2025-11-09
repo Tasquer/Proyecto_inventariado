@@ -1,6 +1,6 @@
 # Core Django
 asgiref==3.10.0
-Django==5.2.7
+Django==4.2.0
 sqlparse==0.5.3
 tzdata==2025.2
 
