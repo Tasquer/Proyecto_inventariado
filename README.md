@@ -1,1 +1,32 @@
 # Proyecto_inventariado
+
+## Colaboradores
+Maximiliano Gonzales
+
+Orlando Aravena
+
+## Instalación
+
+python -m venv .venv
+
+en caso de error: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+.venv\Scripts\activate.ps1
+
+pip install -r requirements.txt
+
+Crear el archivo .env con valores para:
+
+-DB_NAME=
+
+-DB_USER=
+
+-DB_PASSWORD=
+
+-SECRET_KEY=
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py runserver
