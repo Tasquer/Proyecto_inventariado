@@ -27,6 +27,11 @@ Inventario{% endblock %} {% block content %}
         name="q"
         value="{{ search_query }}"
       />
+      <input 
+        type="hidden" 
+        name="sort_by" 
+        value="{{ current_sort_by }}" 
+      />
       <button class="btn btn-outline-secondary" type="submit">
         <i class="bi bi-search"></i>
       </button>
@@ -46,8 +51,42 @@ Inventario{% endblock %} {% block content %}
   </div>
 
   <div class="collapse w-100" id="filtrosCollapse">
-    <div class="card card-body">
-      Aquí puedes poner tus opciones de filtro (por categoría, stock, etc.)
+    div class="card card-body">
+      <div
+        class="list-group list-group-horizontal-md list-group-flush"
+        role="group"
+      >
+        <a 
+          href="{% url 'dashboard' %}?sort_by=recientes&q={{ search_query }}" 
+          class="list-group-item list-group-item-action {% if current_sort_by == 'recientes' %}active{% endif %}"
+        >
+          <i class="bi bi-calendar-event-fill"></i> Recientes primero
+        </a>
+        <a 
+          href="{% url 'dashboard' %}?sort_by=antiguos&q={{ search_query }}" 
+          class="list-group-item list-group-item-action {% if current_sort_by == 'antiguos' %}active{% endif %}"
+        >
+          <i class="bi bi-calendar-event"></i> Antiguos primero
+        </a>
+        <a 
+          href="{% url 'dashboard' %}?sort_by=nombre&q={{ search_query }}" 
+          class="list-group-item list-group-item-action {% if current_sort_by == 'nombre' %}active{% endif %}"
+        >
+          <i class="bi bi-sort-alpha-down"></i> Nombre (A-Z)
+        </a>
+        <a 
+          href="{% url 'dashboard' %}?sort_by=categoria&q={{ search_query }}" 
+          class="list-group-item list-group-item-action {% if current_sort_by == 'categoria' %}active{% endif %}"
+        >
+          <i class="bi bi-tags-fill"></i> Categoría (A-Z)
+        </a>
+        <a 
+          href="{% url 'dashboard' %}?sort_by=stock&q={{ search_query }}" 
+          class="list-group-item list-group-item-action {% if current_sort_by == 'stock' %}active{% endif %}"
+        >
+          <i class="bi bi-box-seam"></i> Stock (Menor a Mayor)
+        </a>
+      </div>
     </div>
   </div>
 </nav>
