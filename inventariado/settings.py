@@ -44,9 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # --- Mis Aplicaciones ---
-    'usuarios',  # <-- 4. Añadimos nuestra app 'usuarios'
+    'dashboard',
+    'usuarios', 
+    'productos',
+    'reportes',
 ]
 
 MIDDLEWARE = [
@@ -64,19 +65,18 @@ ROOT_URLCONF = 'inventariado.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        
-        # --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
-        # Le decimos a Django que busque en la carpeta 'templates'
-        # que está en la raíz del proyecto (BASE_DIR).
+
         'DIRS': [BASE_DIR / 'templates'],
         
-        'APP_DIRS': True, # Esto permite que Django también busque 
-                         # en usuarios/templates/usuarios/
+        'APP_DIRS': True, 
+                         
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.csrf",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'inventariado.wsgi.application'
 
 
 # --- Base de Datos ---
-# 5. Configuramos MySQL para leer desde el .env
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -102,7 +102,6 @@ DATABASES = {
 }
 
 # --- Modelo de Usuario Personalizado ---
-# 6. Le decimos a Django que use nuestro modelo
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
 
@@ -152,3 +151,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/usuarios/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/usuarios/login/'
+LOGIN_URL = 'usuarios:login'

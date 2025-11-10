@@ -1,0 +1,147 @@
+{% extends "base.html" %} {% load static %} {% block title %}Dashboard de
+Inventario{% endblock %} {% block content %}
+<style>
+  body {
+    background-color: #f0f2f5;
+  }
+  footer {
+    background-color: #e4e7eb;
+    border-top: 1px solid #d1d5db;
+  }
+  .btn-accion {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+  }
+</style>
+
+<nav class="navbar navbar-light bg-light mb-4">
+  <div class="container-fluid">
+    <form class="d-flex" role="search" method="get">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Buscar producto..."
+        aria-label="Buscar"
+        name="q"
+        value="{{ search_query }}"
+      />
+      <button class="btn btn-outline-secondary" type="submit">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+
+    <div>
+      <button
+        class="btn btn-outline-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#filtrosCollapse"
+      >
+        <i class="fas fa-filter"></i>
+        Filtrar por
+      </button>
+    </div>
+  </div>
+
+  <div class="collapse w-100" id="filtrosCollapse">
+    <div class="card card-body">
+      Aquí puedes poner tus opciones de filtro (por categoría, stock, etc.)
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <hr />
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Listado de Productos</h5>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Caducidad</th>
+              <th scope="col" class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in productos %}
+            <tr>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.categoria.nombre }}</td>
+              <td>{{ producto.cantidad }}</td>
+              <td>
+                {% if producto.fecha_caducidad %} {{
+                producto.fecha_caducidad|date:"d/m/Y" }} {% else %}
+                <span class="text-muted">N/A</span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                <a
+                  href="{% url 'productos:editar' producto.pk %}"
+                  class="btn btn-primary btn-accion"
+                >
+                  <i class="fas fa-edit"></i> Editar
+                </a>
+                <a
+                  href="{% url 'productos:eliminar' producto.pk %}"
+                  class="btn btn-danger btn-accion"
+                >
+                  <i class="fas fa-trash"></i> Eliminar
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+
+            <tr>
+              <td colspan="5" class="text-center p-5">
+                <h5 class="text-muted">No Hay Productos</h5>
+                <div class="mb-3">
+                  <a
+                    href="{% url 'productos:crear' %}"
+                    class="btn btn-lg d-inline-flex align-items-center"
+                  >
+                    <span
+                      class="border border-success p-1 me-2"
+                      style="
+                        display: inline-block;
+                        width: 30px;
+                        height: 30px;
+                        line-height: 1;
+                        text-align: center;
+                      "
+                    >
+                      <i class="fas fa-plus fa-sm"></i>
+                    </span>
+                    Agregar Producto
+                  </a>
+                </div>
+                <p class="text-muted">
+                  {% if search_query %} No se encontraron productos para la
+                  búsqueda "{{ search_query }}". {% else %} Empieza agregando tu
+                  primer producto. {% endif %}
+                </p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- 3. FOOTER (Link a Reportes) -->
+<footer class="text-center mt-5 p-3 fixed-bottom">
+  <div class="container">
+    <a href="#" class="text-decoration-none text-primary fw-bold">
+      #Reportes
+    </a>
+  </div>
+</footer>
+{% endblock %}

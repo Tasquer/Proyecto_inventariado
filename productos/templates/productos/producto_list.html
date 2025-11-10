@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Inventario de Productos</h1>
+    <p>Aquí puedes ver, editar y eliminar los productos existentes.</p>
+
+    {% if productos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Cantidad</th>
+                    <th>Caducidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td>
+                        <a href="{% url 'productos:detalle' producto.pk %}">
+                            {{ producto.nombre }}
+                        </a>
+                    </td>
+                    <td>{{ producto.categoria.nombre|default:"Sin categoría" }}</td>
+                    <td>{{ producto.cantidad }}</td>
+                    <td>{{ producto.fecha_de_caducidad|default:"N/A" }}</td>
+                    <td>
+                        <a href="{% url 'productos:editar' producto.pk %}" class="btn btn-secondary">Editar</a>
+                        <a href="{% url 'productos:eliminar' producto.pk %}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aún no hay productos en el inventario.</p>
+        <a href="{% url 'productos:crear' %}" class="btn">¡Agrega el primero!</a>
+    {% endif %}
+
+{% endblock %}
