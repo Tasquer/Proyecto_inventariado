@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <h1>Detalle de: {{ producto.nombre }}</h1>
+
+    <p><strong>Categoría:</strong> {{ producto.categoria.nombre|default:"Sin categoría" }}</p>
+    <p><strong>Cantidad en Stock:</strong> {{ producto.cantidad }}</p>
+
+    {% if producto.fecha_de_caducidad %}
+        <p><strong>Fecha de Caducidad:</strong> {{ producto.fecha_de_caducidad }}</p>
+    {% endif %}
+    
+    {% if producto.descripcion %}
+        <h3>Descripción:</h3>
+        <p>{{ producto.descripcion|linebreaks }}</p>
+    {% endif %}
+
+    <hr>
+    
+    <a href="{% url 'productos:editar' producto.pk %}" class="btn">Editar este producto</a>
+    <a href="{% url 'productos:eliminar' producto.pk %}" class="btn btn-danger">Eliminar</a>
+    <br><br>
+    <a href="{% url 'productos:lista' %}">← Volver a la lista</a>
+
+{% endblock %}

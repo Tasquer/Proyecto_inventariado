@@ -81,7 +81,7 @@ def logout_view(request):
     """
     username = request.user.username
     logout(request)
-    messages.info(request, f'Has cerrado sesión. ¡Hasta pronto, {username}!')
+    messages.info(request, f'Has cerrado sesión.')
     return redirect('usuarios:login')
 
 
