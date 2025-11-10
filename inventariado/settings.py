@@ -11,23 +11,17 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config  # <-- 1. Importamos 'config' de decouple
-import pymysql                # <-- 2. Importamos pymysql
+from decouple import config  
+import pymysql               
+from django.urls import reverse_lazy
 
-# --- Configuración de PyMySQL ---
-# Esto le "enseña" a Django cómo usar PyMySQL
 pymysql.install_as_MySQLdb()
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# --- Variables de Entorno ---
-# 3. Leemos la SECRET_KEY y DEBUG desde el archivo .env
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
@@ -106,7 +100,7 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,11 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'es-cl' # Cambiado a Español de Chile
 
-TIME_ZONE = 'America/Santiago' # Cambiado a la zona horaria de Chile
+LANGUAGE_CODE = 'es-cl' 
+
+TIME_ZONE = 'America/Santiago' 
 
 USE_I18N = True
 
@@ -137,22 +131,20 @@ USE_TZ = True
 
 
 # --- Archivos Estáticos y de Medios ---
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# 7. Configuración para las 'fotos' de perfil
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/usuarios/login/'
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/usuarios/login/'
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGOUT_REDIRECT_URL = reverse_lazy('usuarios:login')
 LOGIN_URL = 'usuarios:login'

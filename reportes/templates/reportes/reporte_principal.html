@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes de Inventario{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title">Productos Agregados por Día</h2>
+    <p class="card-subtitle mb-2 text-muted">
+      Reporte de nuevos productos en el inventario, agrupados por día y categoría.
+    </p>
+    
+    <hr>
+    
+    <!-- Aquí es donde se dibujará el gráfico -->
+    <div style="width: 100%; max-height: 500px; position: relative;">
+      <canvas id="graficoProductosDiarios"></canvas>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ block.super }} {# Mantiene los scripts de base.html #}
+
+<!-- 1. Importamos la librería Chart.js desde un CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // Espera a que el documento esté listo
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // 2. Obtenemos el "lienzo" (canvas) donde dibujaremos
+    const ctx = document.getElementById('graficoProductosDiarios').getContext('2d');
+    
+    // 3. Traemos los datos que la vista de Django nos pasó
+    // Usamos '|| []' como fallback por si no hay datos
+    const labels = JSON.parse('{{ chart_labels|safe }}' || '[]');
+    const datasets = JSON.parse('{{ chart_datasets|safe }}' || '[]');
+
+    // 4. Creamos el nuevo gráfico
+    new Chart(ctx, {
+      type: 'bar', // Tipo de gráfico: barras
+      data: {
+        labels: labels,       // Eje X: los días
+        datasets: datasets    // Los grupos de datos (Lacteos, Chocolate, etc.)
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Productos Agregados al Inventario'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          x: {
+            // ¡La magia para apilar!
+            stacked: true, 
+            title: {
+              display: true,
+              text: 'Fecha'
+            }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Cantidad de Productos'
+            }
+          }
+        }
+      }
+    });
+
+  });
+</script>
+{% endblock %}

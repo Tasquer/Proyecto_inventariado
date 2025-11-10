@@ -10,6 +10,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('productos/', include('productos.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('reportes/', include('reportes.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
