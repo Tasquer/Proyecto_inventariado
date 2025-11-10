@@ -28,7 +28,7 @@ Inventario{% endblock %} {% block content %}
         value="{{ search_query }}"
       />
       <button class="btn btn-outline-secondary" type="submit">
-        <i class="fas fa-search"></i>
+        <i class="bi bi-search"></i>
       </button>
     </form>
 
@@ -39,7 +39,7 @@ Inventario{% endblock %} {% block content %}
         data-bs-toggle="collapse"
         data-bs-target="#filtrosCollapse"
       >
-        <i class="fas fa-filter"></i>
+        <i class="bi bi-filter"></i>
         Filtrar por
       </button>
     </div>
@@ -55,9 +55,18 @@ Inventario{% endblock %} {% block content %}
 <main class="container">
   <hr />
 
-  <div class="card shadow-sm">
+<div class="card shadow-sm">
     <div class="card-body">
-      <h5 class="card-title">Listado de Productos</h5>
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="card-title mb-0">Listado de Productos</h5>
+        
+        {% if productos %}
+          <a href="{% url 'productos:crear' %}" class="btn ">
+            <i class="bi bi-plus fa-sm"></i> Agregar Producto
+          </a>
+        {% endif %}
+      </div>
       <div class="table-responsive">
         <table class="table table-hover align-middle">
           <thead class="table-light">
@@ -86,13 +95,13 @@ Inventario{% endblock %} {% block content %}
                   href="{% url 'productos:editar' producto.pk %}"
                   class="btn btn-primary btn-accion"
                 >
-                  <i class="fas fa-edit"></i> Editar
+                  <i class="bi bi-edit"></i> Editar
                 </a>
                 <a
                   href="{% url 'productos:eliminar' producto.pk %}"
                   class="btn btn-danger btn-accion"
                 >
-                  <i class="fas fa-trash"></i> Eliminar
+                  <i class="bi bi-trash"></i> Eliminar
                 </a>
               </td>
             </tr>
@@ -116,7 +125,7 @@ Inventario{% endblock %} {% block content %}
                         text-align: center;
                       "
                     >
-                      <i class="fas fa-plus fa-sm"></i>
+                      <i class="bi bi-plus fa-sm"></i>
                     </span>
                     Agregar Producto
                   </a>

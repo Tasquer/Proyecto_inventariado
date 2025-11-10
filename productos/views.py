@@ -80,4 +80,4 @@ class CategoriaCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
        
-        return self.request.META.get('HTTP_REFERER', reverse_lazy('productos:crear'))
+        return reverse_lazy('productos:crear')
