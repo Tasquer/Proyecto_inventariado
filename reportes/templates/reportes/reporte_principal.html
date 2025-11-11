@@ -22,7 +22,6 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 
@@ -36,17 +35,17 @@
     
     const ctx = document.getElementById('graficoReporte').getContext('2d');
     
-    // 3. Traemos los datos que la vista de Django nos pasó
+
     const labels = JSON.parse('{{ chart_labels|safe }}' || '[]');
     const datasets = JSON.parse('{{ chart_datasets|safe }}' || '[]');
     const chartTitle = '{{ chart_title|safe }}';
 
-    // 4. Creamos el nuevo gráfico (¡TIPO 'pie'!)
+   
     new Chart(ctx, {
-      type: 'pie', // <-- CAMBIO A GRÁFICO DE PIE
+      type: 'pie',
       data: {
-        labels: labels,     // Eje X: los días
-        datasets: datasets  // Los grupos de datos (Lacteos, Chocolate, etc.)
+        labels: labels,    
+        datasets: datasets 
       },
       options: {
         responsive: true,

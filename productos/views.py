@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import Producto, Categoria 
-from .forms import ProductoForm, CategoriaForm # Importamos los forms limpios
+from .forms import ProductoForm, CategoriaForm 
 
 
 # --- VISTAS CRUD DE PRODUCTO ---
@@ -58,7 +58,7 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
 class ProductoDeleteView(LoginRequiredMixin, DeleteView):
     model = Producto
     template_name = 'productos/producto_confirm_delete.html'
-    success_url = reverse_lazy('productos:lista')
+    success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
      

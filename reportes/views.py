@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from productos.models import Producto, Categoria
 
+import csv
+from datetime import date, timedelta
+from django.http import HttpResponse
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 CATEGORIA_COLORES = [
     'rgba(255, 99, 132, 0.7)',
@@ -54,3 +59,4 @@ def reporte_productos_diarios(request):
     }
     
     return render(request, 'reportes/reporte_principal.html', context)
+

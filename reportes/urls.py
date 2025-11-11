@@ -5,4 +5,5 @@ app_name = 'reportes'
 
 urlpatterns = [
     path('', views.reporte_productos_diarios, name='vista_principal'),
+    
 ]
