@@ -26,7 +26,7 @@ class ProductoCreateView(LoginRequiredMixin, CreateView):
     model = Producto
     form_class = ProductoForm 
     template_name = 'productos/producto_form.html' 
-    success_url = reverse_lazy('productos:lista')
+    success_url = reverse_lazy('dashboard')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,7 +43,7 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
     model = Producto
     form_class = ProductoForm 
     template_name = 'productos/producto_form.html' 
-    success_url = reverse_lazy('productos:lista')
+    success_url = reverse_lazy('dashboard')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

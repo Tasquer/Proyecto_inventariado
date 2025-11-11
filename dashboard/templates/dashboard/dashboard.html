@@ -124,11 +124,12 @@ Inventario{% endblock %} {% block content %}
               <td>{{ producto.categoria.nombre }}</td>
               <td>{{ producto.cantidad }}</td>
               <td>
-                {% if producto.fecha_caducidad %} {{
-                producto.fecha_caducidad|date:"d/m/Y" }} {% else %}
-                <span class="text-muted">N/A</span>
-                {% endif %}
-              </td>
+  {% if producto.fecha_caducidad %}
+    {{ producto.fecha_caducidad|date:"d/m/Y" }}
+  {% else %}
+    <span class="text-muted">N/A</span>
+  {% endif %}
+</td>
               <td class="text-end">
                 <a
                   href="{% url 'productos:editar' producto.pk %}"
