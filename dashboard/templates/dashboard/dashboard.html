@@ -50,8 +50,7 @@ Inventario{% endblock %} {% block content %}
     </div>
   </div>
 
-  <div class="collapse w-100" id="filtrosCollapse">
-    div class="card card-body">
+  <div class="collapse w-100 mt-4" id="filtrosCollapse">
       <div
         class="list-group list-group-horizontal-md list-group-flush"
         role="group"
@@ -185,9 +184,8 @@ Inventario{% endblock %} {% block content %}
   </div>
 </main>
 
-<!-- 3. FOOTER (Link a Reportes) -->
 <footer class="text-center mt-5 p-3 fixed-bottom">
-  <div class="container">
+  <div class="container d-flex justify-content-md-end">
     <a href="{% url 'reportes:vista_principal' %}" class="text-decoration-none text-primary fw-bold">
       #Reportes
     </a>

@@ -1,10 +1,7 @@
-# usuarios/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-# ¡Importamos el modelo para poder usar los roles!
 from .models import Usuario 
 
-# --- Función Helper para añadir clases de Bootstrap ---
 def add_bootstrap_classes(form):
     """
     Añade la clase 'form-control' de Bootstrap a todos los campos
@@ -22,7 +19,6 @@ def add_bootstrap_classes(form):
             else:
                 widget.attrs['class'] = (existing_classes + ' form-check-input').strip()
 
-# --- Formulario de Registro (CORREGIDO) ---
 
 class RegistroForm(UserCreationForm):
     """
@@ -37,7 +33,7 @@ class RegistroForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        add_bootstrap_classes(self) # Aplicamos Bootstrap
+        add_bootstrap_classes(self) 
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -48,15 +44,12 @@ class RegistroForm(UserCreationForm):
             user.save()
         return user
 
-# --- Formularios de Edición de Perfil ---
-# ¡AQUÍ ESTÁ LA CORRECCIÓN!
-
 class UsuarioInfoForm(forms.ModelForm):
     """
     Formulario para editar la información básica del usuario.
     """
     class Meta:
-        model = Usuario  # <-- ESTO ES LO QUE FALTABA
+        model = Usuario 
         fields = ['username', 'email', 'first_name', 'last_name'] 
 
     def __init__(self, *args, **kwargs):
@@ -68,9 +61,9 @@ class FotoForm(forms.ModelForm):
     Formulario dedicado solo a cambiar la foto de perfil.
     """
     class Meta:
-        model = Usuario  # <-- ESTO ES LO QUE FALTABA
+        model = Usuario 
         fields = ['foto']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        add_bootstrap_classes(self) # Aplicamos Bootstrap
+        add_bootstrap_classes(self) 
