@@ -51,16 +51,18 @@ class ProductoForm(forms.ModelForm):
         }
 
 # --- Formulario de Categoría ---
+# forms.py
+from django import forms
+from .models import Categoria
+
 class CategoriaForm(forms.ModelForm):
-    """
-    Formulario simple para crear una nueva categoría.
-    """
     class Meta:
         model = Categoria
         fields = ['nombre']
         widgets = {
             'nombre': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'Ej. Lácteos, Limpieza, Bebidas'
-            }),
+                'class': 'form-control border-start-0 ps-0', # border-start-0 para fusionarse con el icono
+                'placeholder': 'Ej. Electrónica, Bebidas...',
+                'autofocus': True
+            })
         }

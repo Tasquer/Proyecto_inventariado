@@ -1,27 +1,61 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Reportes de Inventario{% endblock %}
+{% block title %}Reportes Analíticos{% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title">{{ chart_title|default:"Reporte" }}</h2>
-        <p class="card-subtitle mb-2 text-muted">
-          Distribución de productos en el inventario.
-        </p>
-        
-        <hr>
-        
-        <div style="width: 100%; max-height: 500px; position: relative;">
-          <canvas id="graficoReporte"></canvas>
-        </div>
+<div class="container py-4">
 
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard' %}" class="text-decoration-none">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Reportes</li>
+    </ol>
+  </nav>
+
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold text-dark mb-0">{{ chart_title|default:"Reporte General" }}</h2>
+        <p class="text-muted mb-0">Visualización gráfica de datos del inventario.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <button id="downloadChartBtn" class="btn btn-outline-primary btn-sm" disabled>
+            <i class="bi bi-download me-1"></i> Descargar Gráfico
+        </button>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+          
+            <div class="chart-container" style="position: relative; height: 60vh; min-height: 400px; width: 100%;">
+                <canvas id="graficoReporte"></canvas>
+                
+                <div id="emptyState" class="d-none position-absolute top-50 start-50 translate-middle text-center w-100">
+                    <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                        <i class="bi bi-bar-chart text-muted fs-1"></i>
+                    </div>
+                    <h5 class="text-muted">No hay datos suficientes</h5>
+                    <p class="text-muted small">Intenta ajustar los filtros o agrega productos al inventario.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer bg-white border-top text-center py-3">
+            <small class="text-muted">
+                <i class="bi bi-info-circle me-1"></i> 
+                Datos generados el {% now "d/m/Y H:i" %}
+            </small>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+{{ chart_labels|json_script:"chart-labels-data" }}
+{{ chart_datasets|json_script:"chart-datasets-data" }}
 {% endblock %}
 
 
@@ -33,33 +67,79 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     
-    const ctx = document.getElementById('graficoReporte').getContext('2d');
-    
+  
+    const labelsData = JSON.parse(document.getElementById('chart-labels-data').textContent);
+    const datasetsData = JSON.parse(document.getElementById('chart-datasets-data').textContent);
+ 
+    const labels = (typeof labelsData === 'string') ? JSON.parse(labelsData) : labelsData;
+    const datasets = (typeof datasetsData === 'string') ? JSON.parse(datasetsData) : datasetsData;
 
-    const labels = JSON.parse('{{ chart_labels|safe }}' || '[]');
-    const datasets = JSON.parse('{{ chart_datasets|safe }}' || '[]');
-    const chartTitle = '{{ chart_title|safe }}';
+    const ctx = document.getElementById('graficoReporte');
+    const emptyState = document.getElementById('emptyState');
+    const downloadBtn = document.getElementById('downloadChartBtn');
 
    
-    new Chart(ctx, {
-      type: 'pie',
+    if (!labels || labels.length === 0 || !datasets || datasets.length === 0) {
+        ctx.style.display = 'none';
+        emptyState.classList.remove('d-none');
+        return; 
+    }
+
+   
+    downloadBtn.removeAttribute('disabled');
+
+  
+    const chartType = '{{ chart_type|default:"pie" }}';
+
+    const myChart = new Chart(ctx, {
+      type: chartType,
       data: {
-        labels: labels,    
-        datasets: datasets 
+        labels: labels,
+        datasets: datasets
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false, 
+        layout: {
+            padding: 20
+        },
         plugins: {
           legend: {
-            position: 'top',
+            position: 'bottom', 
+            labels: {
+                padding: 20,
+                font: {
+                    family: "'Inter', sans-serif",
+                    size: 12
+                },
+                usePointStyle: true 
+            }
           },
           title: {
-            display: true,
-            text: chartTitle
+            display: false, 
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            padding: 12,
+            cornerRadius: 8,
+            titleFont: { family: "'Inter', sans-serif", size: 13 },
+            bodyFont: { family: "'Inter', sans-serif", size: 13 }
           }
+        },
+      
+        animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
         }
       }
+    });
+
+   
+    downloadBtn.addEventListener('click', function() {
+        const link = document.createElement('a');
+        link.download = 'reporte-inventario.png';
+        link.href = myChart.toBase64Image();
+        link.click();
     });
 
   });

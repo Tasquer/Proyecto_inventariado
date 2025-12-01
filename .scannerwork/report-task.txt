@@ -1,0 +1,6 @@
+projectKey=sqa_b1ff2d858e48fe2bc0a86c85cc7f052aa2c58634
+serverUrl=http://localhost:9000
+serverVersion=10.5.1.90531
+dashboardUrl=http://localhost:9000/dashboard?id=sqa_b1ff2d858e48fe2bc0a86c85cc7f052aa2c58634
+ceTaskId=0c688a4f-903e-4a95-bed8-6d9593958089
+ceTaskUrl=http://localhost:9000/api/ce/task?id=0c688a4f-903e-4a95-bed8-6d9593958089
